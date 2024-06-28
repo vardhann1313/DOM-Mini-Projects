@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>Number Guessing Game</title>
+  </head>
+  <body>
+    <div class="container text-center mt-4 mb-5">
+      <h1 class="m-2">Number Guessing Game</h1>
+      <p>Guess a number between 1 to 100 within 10 attempts</p>
+    </div>
+    <div class="container text-center mb-5">
+      <h2>Guess a number</h2>
+      <input type="number" required id="number" />
+      <button onclick="StartGame()">Check</button>
+    </div>
+    <div class="container text-center">
+      <h3>Previous guesses : <span id="guesses"></span></h3>
+      <h3>Left attempts : <span id="maxAttempts">10</span></h3>
+      <h3 id="result"></h3>
+      <h2 id="newGame" ></h2>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let num = document.getElementById("number");
+      let guess = 0;
+      const randNum = Math.floor(Math.random() * (100 - 1) + 1);
+      const guesses = document.getElementById("guesses");
+      let attempts = document.getElementById("maxAttempts");
+      const result = document.getElementById("result");
+      let newGame = document.getElementById('newGame')
+
+      let guessSlot = [];
+      let PlayGame = true;
+      let newAttempts = 0;
+
+      function StartGame() {
+        if (PlayGame) {
+            guess = parseInt(num.value);
+            validateGuess(guess);
+            console.log(`Game Started num : ${guess} :: Random no : ${randNum}`)
+        }
+      }
+
+      function validateGuess(guess) {
+        if (guess > 0 && !isNaN(guess) && guess < 101) {
+          guessSlot.push(guess);
+          if ((attempts.innerText) === "1") {
+            displayGuess(guess);
+            displayMessage(`Game Over ! Random nuber was ${randNum}`);
+            endGame();
+          } else {
+            displayGuess(guess);
+            checkGuess(guess);
+          }
+        } else {
+          alert("Enter a valid number !");
+        }
+      }
+
+      function checkGuess(guess) {
+        if (guess === randNum) {
+          displayMessage(`You guessed it right !`);
+          endGame();
+        } else if (guess < randNum) {
+          displayMessage(`TOO LOW !`);
+        } else if (guess > randNum) {
+          displayMessage(`TOO HIGH !`);
+        }
+      }
+
+      function displayGuess(guess) {
+        num.value = "";
+        guesses.innerHTML += `${guess} : `;
+        newAttempts = (attempts.innerText) - 1;
+        attempts.innerHTML = newAttempts;
+      }
+
+      function displayMessage(msg) {
+        num.value = "";
+        result.innerHTML = msg;
+      }
+
+      function endGame(){
+        num.value = "";
+        num.setAttribute('disabled','');
+        newGame.innerHTML = "Start New Game";
+        PlayGame = false;
+      }
+
+      newGame.addEventListener('click',(e)=>{
+        num.removeAttribute('disabled');
+        PlayGame = true;
+        guesses.innerHTML = "";
+        attempts.innerHTML = 10;
+        displayMessage("");
+        newGame.innerHTML = "";
+
+
+      })
+    </script>
+  </body>
+</html>
