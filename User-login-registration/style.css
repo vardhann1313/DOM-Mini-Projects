@@ -61,6 +61,13 @@ input{
     color: #999;
 }
 
+/* password hide OR show css ------------------------ */
+.input-field .fa-eye, .input-field .fa-eye-slash{
+    margin-left: 0;
+    margin-right: 15px;
+}
+/* -------------------------------------------------- */
+
 form p{
     font-size: 13px;
 }
